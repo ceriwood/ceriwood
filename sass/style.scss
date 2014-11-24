@@ -1,0 +1,19 @@
+// **************************************************
+//      Main stylesheet - use for imports only.
+// **************************************************
+
+// --- Import vendor styles
+
+@import '_vendor/_normalize.scss';
+@import '_vendor/_pure.scss';
+
+// --- Import common styles
+
+@import '_common/_common.scss';
+@import '_common/_fonts.scss';
+@import '_common/_mediaqueries.scss';
+@import '_common/_mixins.scss';
+
+
+// --- Import page styles
+@import '_pages/_home.scss';
