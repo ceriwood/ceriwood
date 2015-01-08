@@ -96,7 +96,7 @@ module.exports = function(grunt) {
             options: {
                 base: 'www',
                 branch: 'master',
-                repo: 'https://github.com/ceriwood/ceriwood.github.io.git'
+                repo: 'git@github.com:ceriwood/ceriwood.github.io.git'
             },
             src: ['**/*', '!app/**/*.js']
         } 
