@@ -1,4 +1,4 @@
 node_modules/
 www/css/
 .sass-cache/
-.grunt/*
+.grunt/
