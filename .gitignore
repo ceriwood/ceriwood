@@ -1,3 +1,4 @@
 node_modules/
-www/app/css/
+www/css/
 .sass-cache/
+.grunt/*
