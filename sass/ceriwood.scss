@@ -1,0 +1,9 @@
+// **************************************************
+//      Main stylesheet - use for imports only.
+// **************************************************
+
+// --- Import vendor styles
+@import '_common/mixins.scss';
+
+// --- Import page styles
+@import '_pages/_ceriwood.scss';

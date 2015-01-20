@@ -1,5 +1,5 @@
-$seriffont: serif;
-$sansfont: sans-serif;
+$headerFont: 'Dosis', sans-serif;
+$bodyFont: 'Open Sans', sans-serif;
 
 * {
     box-sizing: border-box;
@@ -13,5 +13,24 @@ html, body {
 }
 
 html {
-    font-family: $seriffont;
+    font-family: $bodyFont;
+}
+
+h1,h2,h3,h4,h5,h6 {
+    font-family: $headerFont;
+    font-weight: 200;
+}
+
+.cf:before,
+.cf:after {
+    content: " "; /* 1 */
+    display: table; /* 2 */
+}
+
+.cf:after {
+    clear: both;
+}
+
+h1 {
+    font-size: 2.8em;
 }

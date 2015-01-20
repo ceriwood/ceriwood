@@ -17,10 +17,13 @@ module.exports = function(grunt) {
         
         browserify: {
             prod: {
-                src: 'app.js',
-                dest: 'build.js',
-                browserifyOptions: {
-                    basedir: 'www/app/'
+                src: 'www/app/app.js',
+                dest: 'www/app/build.js',
+                options: {
+                    //alias: 'path-to-script.js:script-shortname',
+                    browserifyOptions: {
+                       basedir: './node_modules/'
+                    }
                 }
             }
         },
@@ -32,15 +35,22 @@ module.exports = function(grunt) {
         sass: {
             dev: {
                 files: {
-                    'www/css/style.css': 'sass/style.scss'
+                    'www/css/shared.css': 'sass/shared.scss',
+                    'www/css/ceriwood.css': 'sass/ceriwood.scss',
+                    'www/css/music.css': 'sass/music.scss',
+                    'www/css/photography.css': 'sass/photography.scss'
                 }
             },
             prod: {
                 options: {
+                    sourcemap: 'auto',
                     style: 'compressed'
                 },
                 files: {
-                    'www/css/style.css': 'sass/style.scss'
+                    'www/css/shared.css': 'sass/shared.scss',
+                    'www/css/ceriwood.css': 'sass/ceriwood.scss',
+                    'www/css/music.css': 'sass/music.scss',
+                    'www/css/photography.css': 'sass/photography.scss'
                 }
             }
         },
@@ -51,7 +61,7 @@ module.exports = function(grunt) {
                 tasks: ['sass:dev']
             },
             scripts: {
-                files: ['app/**/*.js', '!app/build.js'],
+                files: ['www/app/**/*.js', '!www/app/build.js'],
                 tasks: ['jshint', 'browserify']
             }
         },
@@ -99,7 +109,7 @@ module.exports = function(grunt) {
                 repo: 'git@github.com:ceriwood/ceriwood.github.io.git'
             },
             src: ['**/*', '!app/**/*.js']
-        } 
+        }
     });
     
     grunt.registerTask('default', ['modernizr', 'sass:prod', 'jshint', 'newer:imagemin', 'browserify', 'gh-pages']);

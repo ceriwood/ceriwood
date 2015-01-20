@@ -1,2 +1,2 @@
-// Your code here
-
+var attachFastClick = require('fastclick');
+attachFastClick(document.body);
