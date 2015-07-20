@@ -8,23 +8,6 @@ module.exports = function(grunt) {
     grunt.initConfig({
         pkg: grunt.file.readJSON('package.json'),
         
-        browserify: {
-            prod: {
-                src: 'www/app/app.js',
-                dest: 'www/app/build.js',
-                options: {
-                    //alias: 'path-to-script.js:script-shortname',
-                    browserifyOptions: {
-                       basedir: './node_modules/'
-                    }
-                }
-            }
-        },
-        
-        jshint: {
-            src: ['Gruntfile.js', 'www/app/**/*.js', '!www/app/build.js']
-        },
-        
         sass: {
             dev: {
                 files: {
@@ -60,10 +43,6 @@ module.exports = function(grunt) {
             sass: {
                 files: ['sass/**/*.scss'],
                 tasks: ['sass:dev', 'postcss']
-            },
-            scripts: {
-                files: ['www/app/**/*.js', '!www/app/build.js'],
-                tasks: ['jshint', 'browserify']
             }
         },
         
@@ -109,9 +88,9 @@ module.exports = function(grunt) {
                 branch: 'master',
                 repo: 'git@github.com:ceriwood/ceriwood.github.io.git'
             },
-            src: ['**/*', '!app/**/*.js', 'app/build.js']
+            src: ['**/*']
         }
     });
     
-    grunt.registerTask('default', ['modernizr', 'sass:prod', 'postcss', 'jshint', 'newer:imagemin', 'browserify', 'gh-pages']);
+    grunt.registerTask('default', ['modernizr', 'sass:prod', 'postcss', 'newer:imagemin', 'gh-pages']);
 };

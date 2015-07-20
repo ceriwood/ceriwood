@@ -1,4 +1,4 @@
-$headerFont: 'Dosis', sans-serif;
+$headerFont: 'Open Sans', sans-serif;
 $bodyFont: 'Open Sans', sans-serif;
 
 * {
@@ -14,6 +14,7 @@ html, body {
 
 html {
     font-family: $bodyFont;
+    color: #777;
 }
 
 h1,
@@ -23,8 +24,11 @@ h4,
 h5,
 h6 {
     font-family: $headerFont;
-    font-weight: 200;
+    font-weight: 300;
+    color: #000;
 }
+
+p { font-size: 95%; }
 
 .cf:before,
 .cf:after {
@@ -37,5 +41,5 @@ h6 {
 }
 
 h1 {
-    line-height: 1.6;
+    line-height: 1.4;
 }

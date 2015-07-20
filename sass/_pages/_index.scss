@@ -31,11 +31,9 @@
     p {
         position: relative;
         z-index: 3;
-        transition: color 0.3s;
     }
     
-    &:before,
-    &:after {
+    &:before {
         content: '';
         background: RGBA(0, 0, 0, 0.72);
         position: absolute;
@@ -43,41 +41,40 @@
         left: 0;
         width: 100%;
         height: 100%;
-    }
-    
-    &:before {
-        transition: background 0.4s ease;
+        opacity: .84;
+        transition: opacity 0.4s ease;
         z-index: 2;
-    }
-    
-    &:after {
-        transition: filter 0.3s ease;
-        z-index: 1;
     }
     
     &:hover,
     &:focus {
-        h1 { color: #000; }
-        p { color: #444; }
-        
         &:before {
-            background: rgba(242, 242, 242, 0.76);
-        }
-        
-        &:after {
-            filter: blur(5px);
+            opacity: .96;
         }
     }
 }
 
-#index-music-link:after {
+#index-music-link {
     background: #777 url(/img/ceriwoodmusic-bg.jpg) 100% 0;
     background-size: cover;
+    
+    h1 { color: #000; }
+    p { color: #666; }
+    
+    &:before {
+        background: #f4f4f4;
+    }
 }
 
-#index-photography-link:after {
+#index-photography-link {
     background: #777 url(/img/ceriwoodphotography-bg.jpg) 100% 0;
     background-size: cover;
+    
+    h1 { color: #fff; }
+    
+    &:before {
+        background: #111;
+    }
 }
 
 

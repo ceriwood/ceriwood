@@ -1,12 +1,97 @@
+$musicLinkColor: #66941c;
+
 #music-page {
-    background: #eee;
-    color: #555;
+    ::selection {
+        background: #e7faf2;
+    }
+    
+    main {
+        padding-top: 2em;
+        padding-top: 12vh;
+        max-width: 48em;
+        margin: 0 auto;
+    }
+    
+    a {
+        color: $musicLinkColor;
+        
+        &:hover,
+        &:focus {
+            color: lighten($musicLinkColor, 10%);
+        }
+    }
+}
+
+#music-header {
     text-align: center;
     
-    h1 { margin-top: 0; }
+    h1 { margin: .3em 0 0; }
+    h2 { margin: -.7em 0 1.2em; }
+    p  { margin-bottom: 2em; }
+}
 
-    main {
-        padding-top: 5em;
-        padding-top: 34vh;
+#music-progress {
+    width: 56%;
+    margin: 0 auto;
+    position: relative;
+    z-index: 1;
+}
+
+.play-state-icon {
+    background: 0;
+    outline: 0;
+    box-shadow: none;
+    width: 3.4em;
+    height: 3.4em;
+    border-radius: 50%;
+    border: 1px solid #ccc;
+    display: inline-block;
+    position: absolute;
+    z-index: 2;
+    transition: border-color 0.25s linear;
+    
+    &:hover,
+    &:focus {
+        border-color: $musicLinkColor;
+        
+        .play-icon {
+            border-left-color: $musicLinkColor;
+        }
     }
+}
+
+.music-playing .play-state-icon {
+    border-color: $musicLinkColor;
+    
+    &:hover,
+    &:focus {
+        border-color: lighten($musicLinkColor, 10%);
+    }
+}
+
+.play-icon,
+.pause-icon {
+    transition: border-color 0.25s linear, transform 0.3s ease-out, opacity 0.3s linear;
+    position: absolute;
+    z-index: 2;
+    left: 50%;
+    top: 50%;
+}
+
+.play-icon {
+    display: none;
+    width: 0;
+    height: 0;
+    margin: -10px 0 0 -3px;
+    transform-origin: 3px 10px;
+    border-style: solid;
+    border-width: 10px 0 10px 10px;
+    border-color: transparent transparent transparent #bbb;
+}
+
+.pause-icon {
+    width: 5px;
+    height: 20px;
+    box-shadow: 5px 0 $musicLinkColor, -5px 0 $musicLinkColor;
+    margin: -10px 0 0 -3px;
 }
