@@ -37,7 +37,7 @@ $musicLinkColor: #66941c;
     z-index: 1;
 }
 
-.play-state-icon {
+.play-state-btn {
     background: 0;
     outline: 0;
     box-shadow: none;
@@ -52,34 +52,25 @@ $musicLinkColor: #66941c;
     
     &:hover,
     &:focus {
-        border-color: $musicLinkColor;
+        border-color: #555;
         
         .play-icon {
-            border-left-color: $musicLinkColor;
+            border-left-color: #555;
         }
-    }
-}
-
-.music-playing .play-state-icon {
-    border-color: $musicLinkColor;
-    
-    &:hover,
-    &:focus {
-        border-color: lighten($musicLinkColor, 10%);
     }
 }
 
 .play-icon,
 .pause-icon {
-    transition: border-color 0.25s linear, transform 0.3s ease-out, opacity 0.3s linear;
     position: absolute;
     z-index: 2;
     left: 50%;
     top: 50%;
 }
 
+$musicBtnTransitionDuration: 0.2s;
+
 .play-icon {
-    display: none;
     width: 0;
     height: 0;
     margin: -10px 0 0 -3px;
@@ -87,6 +78,8 @@ $musicLinkColor: #66941c;
     border-style: solid;
     border-width: 10px 0 10px 10px;
     border-color: transparent transparent transparent #bbb;
+    
+    transition: border-color $musicBtnTransitionDuration linear, transform $musicBtnTransitionDuration cubic-bezier(.22, .21, .13, 1), opacity $musicBtnTransitionDuration linear, visibility 0s linear;
 }
 
 .pause-icon {
@@ -94,4 +87,33 @@ $musicLinkColor: #66941c;
     height: 20px;
     box-shadow: 5px 0 $musicLinkColor, -5px 0 $musicLinkColor;
     margin: -10px 0 0 -3px;
+    
+    opacity: 0;
+    visibility: hidden;
+    transform: rotate(100deg);
+    
+    transition: box-shadow $musicBtnTransitionDuration linear 0s, transform $musicBtnTransitionDuration cubic-bezier(.22, .21, .13, 1) 0s, opacity $musicBtnTransitionDuration linear 0s, visibility 0s linear $musicBtnTransitionDuration;
+}
+
+.play-state-btn.active  {
+    border-color: $musicLinkColor;
+    
+    &:hover,
+    &:focus {
+        border-color: lighten($musicLinkColor, 10%);
+    }
+    
+    .play-icon {
+        visibility: hidden;
+        opacity: 0;
+        transform: rotate(-100deg);
+        transition-delay: 0s, 0s, 0s, $musicBtnTransitionDuration;
+    }
+    
+    .pause-icon {
+        visibility: visible;
+        opacity: 1;
+        transform: rotate(0);
+        transition-delay: 0s, 0s, 0s, 0s;
+    }
 }

@@ -4,6 +4,8 @@ $bodyFont: 'Open Sans', sans-serif;
 * {
     box-sizing: border-box;
     -moz-box-sizing: border-box;
+    tap-highlight-color: rgba(0,0,0,0);
+    tap-highlight-color: transparent;
 }
 
 html, body {
