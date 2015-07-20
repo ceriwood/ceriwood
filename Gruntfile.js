@@ -3,14 +3,7 @@
 module.exports = function(grunt) {
     'use strict';
     
-    grunt.loadNpmTasks('grunt-browserify');
-    grunt.loadNpmTasks('grunt-contrib-jshint');
-    grunt.loadNpmTasks('grunt-contrib-sass');
-    grunt.loadNpmTasks('grunt-contrib-watch');
-    grunt.loadNpmTasks('grunt-modernizr');
-    grunt.loadNpmTasks('grunt-contrib-imagemin');
-    grunt.loadNpmTasks('grunt-gh-pages');
-    grunt.loadNpmTasks('grunt-newer');
+    require('load-grunt-tasks')(grunt);
     
     grunt.initConfig({
         pkg: grunt.file.readJSON('package.json'),
@@ -35,10 +28,7 @@ module.exports = function(grunt) {
         sass: {
             dev: {
                 files: {
-                    'www/css/shared.css': 'sass/shared.scss',
-                    'www/css/ceriwood.css': 'sass/ceriwood.scss',
-                    'www/css/music.css': 'sass/music.scss',
-                    'www/css/photography.css': 'sass/photography.scss'
+                    'www/css/style.css': 'sass/style.scss'
                 }
             },
             prod: {
@@ -47,18 +37,29 @@ module.exports = function(grunt) {
                     style: 'compressed'
                 },
                 files: {
-                    'www/css/shared.css': 'sass/shared.scss',
-                    'www/css/ceriwood.css': 'sass/ceriwood.scss',
-                    'www/css/music.css': 'sass/music.scss',
-                    'www/css/photography.css': 'sass/photography.scss'
+                    'www/css/style.css': 'sass/style.scss'
                 }
+            }
+        },
+        
+        postcss: {
+            options: {
+                map: true,
+                processors: [
+                    require('autoprefixer-core')({
+                        browsers: ['last 2 versions', 'ie 9']
+                    })
+                ]
+            },
+            dist: {
+                src: 'www/css/style.css'
             }
         },
         
         watch: {
             sass: {
                 files: ['sass/**/*.scss'],
-                tasks: ['sass:dev']
+                tasks: ['sass:dev', 'postcss']
             },
             scripts: {
                 files: ['www/app/**/*.js', '!www/app/build.js'],
@@ -112,5 +113,5 @@ module.exports = function(grunt) {
         }
     });
     
-    grunt.registerTask('default', ['modernizr', 'sass:prod', 'jshint', 'newer:imagemin', 'browserify', 'gh-pages']);
+    grunt.registerTask('default', ['modernizr', 'sass:prod', 'postcss', 'jshint', 'newer:imagemin', 'browserify', 'gh-pages']);
 };

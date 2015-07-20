@@ -1,142 +1,118 @@
-main {
+#index-main {
     width: 100%;
     height: 100%;
-    
-    > a {
-        background-color: #777;
-        text-decoration: none;
-        color: #fff;
-        position: relative;
-        
-        .overlay {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            transition: background 0.6s ease;
-            z-index: 1;
-        }
-        
-        h1, p {
-            position: relative;
-            z-index: 2;
-        }
-    }
 }
 
-header {
+#index-header {
     top: 0;
     left: 0;
     width: 100%;
     height: 59px;
     position: fixed;
     z-index: 3;
+    background: #fff;
+    text-align: center;
     
-    @include flexbox();
+    img {
+        display: inline-block;
+    }
+}
+
+.index-image-link {
+    background-color: #777;
+    text-decoration: none;
+    color: #fff;
+    position: relative;
+    
+    h1 { margin: 0; }
+    p { margin-top: .4em; }
+    
+    h1,
+    p {
+        position: relative;
+        z-index: 3;
+        transition: color 0.3s;
+    }
     
     &:before,
     &:after {
         content: '';
-        @include flex();
-        background: #fff;
+        background: RGBA(0, 0, 0, 0.72);
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+    }
+    
+    &:before {
+        transition: background 0.4s ease;
+        z-index: 2;
+    }
+    
+    &:after {
+        transition: filter 0.3s ease;
+        z-index: 1;
+    }
+    
+    &:hover,
+    &:focus {
+        h1 { color: #000; }
+        p { color: #444; }
+        
+        &:before {
+            background: rgba(242, 242, 242, 0.76);
+        }
+        
+        &:after {
+            filter: blur(5px);
+        }
     }
 }
 
-footer p {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    text-align: center;
-    color: #fff;
-    margin: 0;
-    z-index: 3;
-    font-size: .8em;
-    padding: .6em 0;
-}
-
-#music-link {
+#index-music-link:after {
     background: #777 url(/img/ceriwoodmusic-bg.jpg) 100% 0;
     background-size: cover;
-    
-    .overlay {
-        background: RGBA(17, 141, 177, 0.55);
-    }
-    
-    &:hover,
-    &:focus {
-        .overlay {
-            background: RGBA(17, 141, 177, 0.85);
-        }
-    }
 }
 
-#photography-link {
+#index-photography-link:after {
     background: #777 url(/img/ceriwoodphotography-bg.jpg) 100% 0;
     background-size: cover;
-    
-    .overlay {
-        background: RGBA(123, 106, 15, 0.7);
-    }
-    
-    &:hover,
-    &:focus {
-        .overlay {
-            background: RGBA(123, 106, 15, 0.9);
-        }
-    }
 }
 
-h1 {
-    margin: 0;
-}
 
-p {
-    margin-top: .4em;
-}
 
 @media (orientation: landscape) {
-    main {
+    #index-main {
         @include flexbox();
-
-        > a {
-            @include flex();
-            padding-top: 43%;
-            padding-top: 43vh;
-            padding-left: 1.7em;
-            padding-right: 1.7em;
-        }
     }
     
-    #music-link {
+    .index-image-link {
+        @include flex();
+        padding-top: 43%;
+        padding-top: 43vh;
+        padding-left: 1.7em;
+        padding-right: 1.7em;
+    }
+    
+    #index-music-link {
         text-align: right;
     }
 }
 
 @media (orientation: portrait) {
-    header {
+    #index-header {
         position: static;
-        background: #0b556b;
     }
     
-    main {
+    #index-main {
         height: auto;
     }
     
-    main > a {
+    .index-image-link {
         display: block;
         text-align: center;
         padding-top: 4em;
         padding-bottom: 4em;
-    }
-    
-    footer {
-        p {
-            position: static;
-            padding-top: .6em;
-            color: #444;
-        }
     }
 }

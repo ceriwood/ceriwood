@@ -1,22 +1,25 @@
 {
-    "name": "ceriwood",
-    "version": "0.1.0",
-    "private": true,
-    "author": {
-        "name": "Aidan Jalali",
-        "email": "aidanjalali@gmail.com"
-    },
-    "dependencies": {
-        "fastclick":  "^1"
-    },
-    "devDependencies": {
-        "grunt-browserify": "^3",
-        "grunt-contrib-jshint": "^0",
-        "grunt-contrib-sass": "^0",
-        "grunt-contrib-watch": "^0",
-        "grunt-modernizr": "^0",
-        "grunt-gh-pages": "^0",
-        "grunt-contrib-imagemin": "^0",
-        "grunt-newer": "^0"
-    }
+  "name": "ceriwood",
+  "version": "0.1.0",
+  "private": true,
+  "author": {
+    "email": "aidanjalali@gmail.com",
+    "name": "Aidan Jalali"
+  },
+  "dependencies": {
+    "fastclick": "^1"
+  },
+  "devDependencies": {
+    "autoprefixer": "^5.2.0",
+    "grunt-browserify": "^3",
+    "grunt-contrib-imagemin": "^0",
+    "grunt-contrib-jshint": "^0",
+    "grunt-contrib-sass": "^0",
+    "grunt-contrib-watch": "^0",
+    "grunt-gh-pages": "^0",
+    "grunt-modernizr": "^0",
+    "grunt-newer": "^0",
+    "grunt-postcss": "^0.5.5",
+    "load-grunt-tasks": "^3.2.0"
+  }
 }
