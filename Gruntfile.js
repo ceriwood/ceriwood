@@ -55,7 +55,7 @@ module.exports = function(grunt) {
                     load: false
                 },
                 
-                tests: ['csstransforms'],
+                tests: ['touch'],
                 
                 uglify: true,
                 
@@ -92,5 +92,5 @@ module.exports = function(grunt) {
         }
     });
     
-    grunt.registerTask('default', ['modernizr', 'sass:prod', 'postcss', 'newer:imagemin', 'gh-pages']);
+    grunt.registerTask('default', ['modernizr', 'sass:prod', 'postcss', 'gh-pages']);
 };
