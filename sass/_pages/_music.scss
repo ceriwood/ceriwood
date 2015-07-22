@@ -7,7 +7,8 @@ $musicLinkColor: #66941c;
     
     main {
         padding-top: 2em;
-        padding-top: 12vh;
+        padding-top: 10vh;
+        padding-bottom: 5em;
         max-width: 48em;
         margin: 0 auto;
     }
@@ -46,7 +47,7 @@ $musicLinkColor: #66941c;
     border-radius: 50%;
     border: 1px solid #ccc;
     display: inline-block;
-    position: absolute;
+    position: relative;
     z-index: 2;
     transition: border-color 0.25s linear;
     
@@ -58,6 +59,21 @@ $musicLinkColor: #66941c;
             border-left-color: #555;
         }
     }
+}
+
+.play-state-btn-small {
+    width: 2em;
+    height: 2em;
+    
+    .play-icon {
+        border-width: 5px 0 5px 5px;
+        margin: -5px 0 0 -1.5px;
+        transform-origin: 1.5px 10px;
+    }
+}
+
+.music-progress .play-state-btn {
+    position: absolute;
 }
 
 .play-icon,
@@ -115,5 +131,38 @@ $musicBtnTransitionDuration: 0.2s;
         opacity: 1;
         transform: rotate(0);
         transition-delay: 0s, 0s, 0s, 0s;
+    }
+}
+
+#profile-image-wrap {
+    text-align: right;
+}
+
+#tracklist {
+    list-style: none;
+    text-align: left;
+    font-size: .85rem;
+    
+    .play-state-btn {
+        float: left;
+        margin-right: .8em;
+    }
+    
+    a {
+        display: block;
+        box-shadow: 0 1px 10px #F3F3F3;
+        padding: 1em 1.2em;
+        text-decoration: none;
+    }
+    
+    h4 {
+        color: $musicLinkColor;
+        margin: 0;
+    }
+    
+    p {
+        font-size: 95%;
+        margin: .2em 0;
+        color: #aaa;
     }
 }

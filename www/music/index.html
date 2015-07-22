@@ -38,10 +38,6 @@
     <script src="/modernizr-custom.js"></script>
 </head>
 <body id="music-page">
-    
-<header id="page-header" role="banner">
-    
-</header>
 
 <main role="main">
     <header id="music-header">
@@ -52,7 +48,7 @@
     </header>
     
     <div id="music-progress">
-        <button class="play-state-btn">
+        <button id="main-play-btn" class="play-state-btn">
             <span class="play-icon" title="Play"></span>
             <span class="pause-icon" title="Pause"></span>
         </button>
@@ -61,6 +57,45 @@
             <span class="progress-bar-inner"></span>
         </span>
     </div>
+    
+    <section class="grid">
+        <div id="profile-image-wrap">
+            <img src="/img/music/ceriface.jpg" width="150" height="150" class="rounded">
+        </div>
+
+        <ul id="tracklist">
+            <li>
+                <a href="./samples/blackbird.mp3">
+                    <button class="play-state-btn play-state-btn-small">
+                        <span class="play-icon" title="Play"></span>
+                        <span class="pause-icon" title="Pause"></span>
+                    </button>
+                    <h4>Blackbird on the Wire</h4>
+                    <p>3 mins 32 secs</p>
+                </a>
+            </li>
+            <li>
+                <a href="./samples/celeste.mp3">
+                    <button class="play-state-btn play-state-btn-small">
+                        <span class="play-icon" title="Play"></span>
+                        <span class="pause-icon" title="Pause"></span>
+                    </button>
+                    <h4>Celeste</h4>
+                    <p>3 mins 32 secs</p>
+                </a>
+            </li>
+            <li>
+                <a href="./samples/sweet-love.mp3">
+                    <button class="play-state-btn play-state-btn-small">
+                        <span class="play-icon" title="Play"></span>
+                        <span class="pause-icon" title="Pause"></span>
+                    </button>
+                    <h4>Sweet Love</h4>
+                    <p>3 mins 32 secs</p>
+                </a>
+            </li>
+        </ul>
+    </section>
 </main>
     
 <footer id="page-footer">
@@ -68,9 +103,79 @@
 </footer>
     
 <script>
-    $('.play-state-btn').click(function(e){
-        $(this).toggleClass('active');
+    
+    // --- Music player
+    var player = function(){
+        this.audio = new Audio();
+    };
+    
+    player.prototype = {
+        play: function(href){
+            /*
+                $('.play-state-btn.active').removeClass('active');
+                $(e.currentTarget).addClass('active');
+            */
+
+            if (typeof href === 'string') {
+                if (this.audio.src === href) {
+                    // Don't fetch the url if its the same.
+                    this.audio.play();
+                    return;
+                }
+                
+                this.audio.src = href;
+                this.audio.pause();
+                this.audio.load();
+                this.audio.play();
+            } else {
+
+            }
+        },
+
+        pause: function(){
+            $('.play-state-btn.active').removeClass('active');
+            this.audio.pause();
+        }
+    };
+    
+    // --- Main app
+    var app = function(){
+        this.player = new player();
+        this.el = {
+            $mainPlayBtn: $('#main-play-btn'),
+            $trackLink: $('#tracklist a')
+        };
+    };
+    
+    app.prototype = {
+        init: function(){
+            this.bindEvents();
+        },
+        
+        bindEvents: function(){
+            this.el.$mainPlayBtn.click(this.player.play.bind(this));
+            this.el.$trackLink.click(this.clickListing.bind(this));
+        },
+        
+        clickListing: function(e){
+            e.preventDefault();
+            
+            var $this = $(this);
+            var $btn = $this.find('.play-state-btn');
+            
+            if ($btn.hasClass('active')) {
+                this.player.pause();
+            } else {
+                this.player.play(e.currentTarget.href);
+            }
+        }
+    };
+    
+    var App = new app();
+    $(document).ready(function(){
+        App.init()
     });
+    
 </script>
 
 </body>
