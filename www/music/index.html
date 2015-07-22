@@ -98,8 +98,8 @@
     </div>
 </main>
     
-<footer id="page-footer">
-    
+<footer id="music-footer">
+    <p>Looking for my photography? Visit <a href="http://ceriwoodphotography.com">ceriwoodphotography.com</a></p>
 </footer>
     
 <script>
@@ -118,20 +118,20 @@
         },
         
         bindEvents: function(){
-            this.audio.addEventListener('timeupdate', this.updateStave.bind(this), false);
-            this.audio.addEventListener('ended', this.changeTrack.bind(this), false);
+            this.audio.addEventListener('timeupdate', this.updateStave.bind(this));
+            this.audio.addEventListener('loadstart', this.addLoading.bind(this));
+            this.audio.addEventListener('play', this.addActive.bind(this));
+            this.audio.addEventListener('ended', this.changeTrack.bind(this));
             
             if (Modernizr.touch){
                 document.getElementsByClassName('progress-bar')[0].addEventListener('touchstart', this.startDrag.bind(this), false);
                 document.addEventListener('touchmove', this.dragging.bind(this), false);
                 document.addEventListener('touchend', this.stopDrag.bind(this), false);
             } else {
-                $('.progress-bar').on('mousedown touchstart', this.startDrag.bind(this));
+                $('.progress-bar').on('mousedown', this.startDrag.bind(this));
                 $(document).on('mousemove', this.dragging.bind(this));
                 $(document).on('mouseup touchend', this.stopDrag.bind(this));
             }
-            
-            
         },
         
         startDrag: function(e){
@@ -147,6 +147,7 @@
             }
             
             var clientX = (e.touches !== void 0) ? e.touches[0].clientX : e.clientX;
+            
             var e = {
                 clientX: clientX
             };
@@ -178,8 +179,11 @@
             this.isDragging = false;
             $('.dragging').removeClass('dragging');
             
+            var outerWidth = $('.progress-bar').outerWidth(false);
+            var innerWidth = $('.progress-bar-inner').outerWidth(false);
+            
             if (this.wasPlaying){
-                this.play();
+                this.audio.play();
                 this.wasPlaying = false;
             }
         },
@@ -194,6 +198,7 @@
         
         changeTrack: function(){
             var $nextLi = $('a[href="' + this.currentlyPlaying + '"]').closest('li').next('li');
+            
             if ($nextLi.length === 0) {
                 this.stop();
                 return;
@@ -208,15 +213,28 @@
             $('#main-play-btn').removeClass('active');
         },
         
+        addLoading: function(){
+            $('a[href="' + this.currentlyPlaying + '"]').addClass('loading');
+            
+            var self = this;
+            
+            function audioCanPlay(){
+                self.addActive();
+                self.audio.play();
+                
+                self.audio.removeEventListener('canplay', audioCanPlay);
+            };
+            
+            this.audio.addEventListener('canplay', audioCanPlay);
+        },
+        
         addActive: function(){
             $('a').filter('.selected').removeClass('selected');
-            $('a[href="' + this.currentlyPlaying + '"]').addClass('selected active').find('.play-state-btn').addClass('active');
+            $('a[href="' + this.currentlyPlaying + '"]').addClass('selected active').removeClass('loading').find('.play-state-btn').addClass('active');
             $('#main-play-btn').addClass('active');
         },
         
         play: function(href){
-            this.removeActive();
-            
             // First play - change cursor on progress bar
             if (this.currentlyPlaying === ''){
                 $('.progress-bar').addClass('active');
@@ -228,18 +246,16 @@
                 this.currentlyPlaying = $('#tracklist').find('a').first().attr('href');
             }
             
-            this.addActive();
-            
             if (this.audio.currentSrc === window.location.origin + this.currentlyPlaying) {
                 // Don't fetch the url if its the same.
                 this.audio.play();
                 return;
             }
             
+            this.removeActive();
             this.audio.src = this.currentlyPlaying;
             this.audio.pause();
             this.audio.load();
-            this.audio.play();
         },
 
         pause: function(){
