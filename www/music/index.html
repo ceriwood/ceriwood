@@ -60,7 +60,7 @@
                         <span class="pause-icon" title="Pause"></span>
                     </button>
                     <h4>Blackbird</h4>
-                    <p>3 mins 32 secs</p>
+                    <p>2 mins 24 secs</p>
                 </a>
             </li>
             <li>
@@ -70,7 +70,7 @@
                         <span class="pause-icon" title="Pause"></span>
                     </button>
                     <h4>Celeste</h4>
-                    <p>3 mins 32 secs</p>
+                    <p>3 mins 46 secs</p>
                 </a>
             </li>
             <li>
@@ -80,7 +80,7 @@
                         <span class="pause-icon" title="Pause"></span>
                     </button>
                     <h4>Sweet Love</h4>
-                    <p>3 mins 32 secs</p>
+                    <p>3 mins 18 secs</p>
                 </a>
             </li>
         </ul>
@@ -108,6 +108,8 @@
     function Player(){
         this.audio = new Audio();
         this.currentlyPlaying = '';
+        this.isDragging = false;
+        this.wasPlaying = false;
     };
     
     Player.prototype = {
@@ -117,6 +119,69 @@
         
         bindEvents: function(){
             this.audio.addEventListener('timeupdate', this.updateStave.bind(this), false);
+            this.audio.addEventListener('ended', this.changeTrack.bind(this), false);
+            
+            if (Modernizr.touch){
+                document.getElementsByClassName('progress-bar')[0].addEventListener('touchstart', this.startDrag.bind(this), false);
+                document.addEventListener('touchmove', this.dragging.bind(this), false);
+                document.addEventListener('touchend', this.stopDrag.bind(this), false);
+            } else {
+                $('.progress-bar').on('mousedown touchstart', this.startDrag.bind(this));
+                $(document).on('mousemove', this.dragging.bind(this));
+                $(document).on('mouseup touchend', this.stopDrag.bind(this));
+            }
+            
+            
+        },
+        
+        startDrag: function(e){
+            var $target = $(e.currentTarget);
+            if (!$target.hasClass('active')) return;
+
+            this.isDragging = true;
+            $(e.currentTarget).addClass('dragging');
+
+            if ($('#tracklist').find('.active').length !== 0){
+                this.wasPlaying = true;
+                this.pause();
+            }
+            
+            var clientX = (e.touches !== void 0) ? e.touches[0].clientX : e.clientX;
+            var e = {
+                clientX: clientX
+            };
+            
+            this.dragging(e);
+        },
+        
+        dragging: function(e){
+            if (!this.isDragging) return true;
+            
+            var $bar = $('.progress-bar');
+            var clientX = (e.touches !== void 0) ? e.touches[0].clientX : e.clientX;
+            var x = clientX - parseFloat($bar.offset().left);
+            var width = $bar.outerWidth(false);
+            
+            x = (x < 0) ? 0 : (x > width) ? width : x;
+            var percent = (x/width) * 100;
+
+            $bar.find('.progress-bar-inner').css('width', percent + '%');
+            
+            this.audio.currentTime = parseFloat((x/width) * this.audio.duration);
+            
+            return false;
+        },
+        
+        stopDrag: function(e){
+            if (!this.isDragging) return true;
+
+            this.isDragging = false;
+            $('.dragging').removeClass('dragging');
+            
+            if (this.wasPlaying){
+                this.play();
+                this.wasPlaying = false;
+            }
         },
         
         updateStave: function(e){
@@ -125,15 +190,16 @@
             var percent = (currentTime/duration) * 100;
             
             $('.progress-bar-inner').css('width', percent + '%');
+        },
+        
+        changeTrack: function(){
+            var $nextLi = $('a[href="' + this.currentlyPlaying + '"]').closest('li').next('li');
+            if ($nextLi.length === 0) {
+                this.stop();
+                return;
+            };
             
-            /*
-            var progress = document.getElementById("progress");
-            var value = 0;
-            if (video.currentTime > 0) {
-              value = Math.floor((100 / video.duration) * video.currentTime);
-            }
-            progress.style.width = value + "%";
-            */
+            this.play($nextLi.find('a').attr('href'));
         },
         
         removeActive: function(){
@@ -150,6 +216,11 @@
         
         play: function(href){
             this.removeActive();
+            
+            // First play - change cursor on progress bar
+            if (this.currentlyPlaying === ''){
+                $('.progress-bar').addClass('active');
+            }
             
             if (typeof href === 'string') {
                 this.currentlyPlaying = href;
@@ -169,12 +240,20 @@
             this.audio.pause();
             this.audio.load();
             this.audio.play();
-            
         },
 
         pause: function(){
             this.removeActive();
             this.audio.pause();
+        },
+        
+        stop: function(){
+            this.removeActive();
+            
+            this.audio.src = '';
+            this.currentlyPlaying = '';
+            $('.progress-bar').removeClass('active').find('.progress-bar-inner').removeAttr('style');
+            $('#tracklist').find('.selected').removeClass('selected');
         }
     };
     

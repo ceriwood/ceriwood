@@ -226,7 +226,7 @@ $musicBtnTransitionDuration: 0.2s;
     margin-left: -1em;
 }
 
-.play-state-btn.active + .progress-bar {
+.progress-bar.active {
     cursor: col-resize;
 }
 
@@ -249,6 +249,10 @@ $musicBtnTransitionDuration: 0.2s;
         background: url(/img/music/stave-overlay.svg) repeat-x right top;
         background-size: cover;
     }
+    
+    &.dragging {
+        cursor: grabbing !important;
+    }
 }
 
 .progress-bar-inner {
@@ -256,7 +260,6 @@ $musicBtnTransitionDuration: 0.2s;
     height: 100%;
     width: 0%;
     background: $musicLinkColor;
-    transition: width .05s linear;
 }
 
 
