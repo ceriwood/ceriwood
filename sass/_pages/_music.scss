@@ -1,4 +1,6 @@
 $musicLinkColor: #66941c;
+$musicBtnTransitionDuration: 0.2s;
+
 
 #music-page {
     ::selection {
@@ -7,8 +9,10 @@ $musicLinkColor: #66941c;
     
     main {
         padding-top: 2em;
-        padding-top: 10vh;
+        padding-top: 7vh;
         padding-bottom: 5em;
+        padding-left: 1em;
+        padding-right: 1em;
         max-width: 48em;
         margin: 0 auto;
     }
@@ -28,7 +32,6 @@ $musicLinkColor: #66941c;
     
     h1 { margin: .3em 0 0; }
     h2 { margin: -.7em 0 1.2em; }
-    p  { margin-bottom: 2em; }
 }
 
 #music-progress {
@@ -38,6 +41,8 @@ $musicLinkColor: #66941c;
     z-index: 1;
 }
 
+
+/* ------ Play button ------ */
 .play-state-btn {
     background: 0;
     outline: 0;
@@ -70,6 +75,13 @@ $musicLinkColor: #66941c;
         margin: -5px 0 0 -1.5px;
         transform-origin: 1.5px 10px;
     }
+    
+    .pause-icon {
+        width: .2em;
+        height: .8em;
+        box-shadow: .2em 0 $musicLinkColor, -.2em 0 $musicLinkColor;
+        margin: -.4em 0 0 -0.1em;
+    }
 }
 
 .music-progress .play-state-btn {
@@ -84,8 +96,6 @@ $musicLinkColor: #66941c;
     top: 50%;
 }
 
-$musicBtnTransitionDuration: 0.2s;
-
 .play-icon {
     width: 0;
     height: 0;
@@ -99,10 +109,10 @@ $musicBtnTransitionDuration: 0.2s;
 }
 
 .pause-icon {
-    width: 5px;
-    height: 20px;
-    box-shadow: 5px 0 $musicLinkColor, -5px 0 $musicLinkColor;
-    margin: -10px 0 0 -3px;
+    width: 0.3em;
+    height: 1.2em;
+    box-shadow: .3em 0 $musicLinkColor, -.3em 0 $musicLinkColor;
+    margin: -.6em 0 0 -.15em;
     
     opacity: 0;
     visibility: hidden;
@@ -112,11 +122,11 @@ $musicBtnTransitionDuration: 0.2s;
 }
 
 .play-state-btn.active  {
-    border-color: $musicLinkColor;
+    border-color: $musicLinkColor !important;
     
     &:hover,
     &:focus {
-        border-color: lighten($musicLinkColor, 10%);
+        border-color: lighten($musicLinkColor, 10%) !important;
     }
     
     .play-icon {
@@ -134,25 +144,69 @@ $musicBtnTransitionDuration: 0.2s;
     }
 }
 
+/* ------ End play button ------ */
+
+
 #profile-image-wrap {
     text-align: right;
+    
+    img {
+        margin-top: .8em;
+    }
 }
+
+
+/* ------ Track list ------ */
 
 #tracklist {
     list-style: none;
     text-align: left;
     font-size: .85rem;
+    padding-right: 13%;
     
     .play-state-btn {
         float: left;
-        margin-right: .8em;
+        margin: .5em .8em .3em 0;
+    }
+    
+    li {
+        margin-bottom: .3em;
     }
     
     a {
         display: block;
-        box-shadow: 0 1px 10px #F3F3F3;
-        padding: 1em 1.2em;
+        padding: .5em 1.2em .4em;
         text-decoration: none;
+        transition: box-shadow 0.2s, border-color 0.2s;
+        outline: none;
+        border-radius: 3px;
+        border: 1px solid transparent;
+        
+        &:hover {
+            box-shadow: 0 1px 10px #F1F1F1;
+        }
+        
+        &:focus {
+            box-shadow: 0 1px 1px .5px #DDD;
+        }
+        
+        &:hover .play-state-btn,
+        &:focus .play-state-btn {
+            border-color: #555;
+
+            .play-icon {
+                border-left-color: #555;
+            }
+            
+            .pause-icon {
+                
+            }
+        }
+        
+        &.active {
+            border-color: $musicLinkColor;
+            box-shadow: none;
+        }
     }
     
     h4 {
@@ -164,5 +218,15 @@ $musicBtnTransitionDuration: 0.2s;
         font-size: 95%;
         margin: .2em 0;
         color: #aaa;
+    }
+}
+
+@media screen and (max-width: $smBreakpoint){
+    #profile-image-wrap {
+        text-align: center;
+    }
+    
+    #tracklist {
+        padding-right: 0;
     }
 }

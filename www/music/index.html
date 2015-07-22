@@ -44,8 +44,47 @@
         <img src="/img/music/cclef.svg" width="110" height="110">
         <h1><img src="/img/cw-logo-black.svg" width="280" alt="Ceri Wood logo"></h1>
         <h2>Vocalist with over 10 years teaching experience.</h2>
-        <p>[ Sorry, I don’t drive! But I have great hair. <a href="mailto:ceriwoodmusic@gmail.com">ceriwoodmusic@gmail.com</a> ]</p>
+        <p>[&nbsp;Sorry, I don’t drive! But I have great hair. <a href="mailto:ceriwoodmusic@gmail.com">ceriwoodmusic@gmail.com</a>&nbsp;]</p>
     </header>
+    
+    <section class="grid-half">
+        <div id="profile-image-wrap">
+            <img src="http://www.gravatar.com/avatar/b43baf288b9f2fdf7a712f71d7a3efd3?s=300" width="150" height="150" class="rounded">
+        </div>
+
+        <ul id="tracklist">
+            <li>
+                <a href="/music/samples/blackbird.mp3">
+                    <button tabindex="-1" class="play-state-btn play-state-btn-small">
+                        <span class="play-icon" title="Play"></span>
+                        <span class="pause-icon" title="Pause"></span>
+                    </button>
+                    <h4>Blackbird on the Wire</h4>
+                    <p>3 mins 32 secs</p>
+                </a>
+            </li>
+            <li>
+                <a href="/music/samples/celeste.mp3">
+                    <button tabindex="-1" class="play-state-btn play-state-btn-small">
+                        <span class="play-icon" title="Play"></span>
+                        <span class="pause-icon" title="Pause"></span>
+                    </button>
+                    <h4>Celeste</h4>
+                    <p>3 mins 32 secs</p>
+                </a>
+            </li>
+            <li>
+                <a href="/music/samples/sweet-love.mp3">
+                    <button tabindex="-1" class="play-state-btn play-state-btn-small">
+                        <span class="play-icon" title="Play"></span>
+                        <span class="pause-icon" title="Pause"></span>
+                    </button>
+                    <h4>Sweet Love</h4>
+                    <p>3 mins 32 secs</p>
+                </a>
+            </li>
+        </ul>
+    </section>
     
     <div id="music-progress">
         <button id="main-play-btn" class="play-state-btn">
@@ -57,45 +96,6 @@
             <span class="progress-bar-inner"></span>
         </span>
     </div>
-    
-    <section class="grid">
-        <div id="profile-image-wrap">
-            <img src="/img/music/ceriface.jpg" width="150" height="150" class="rounded">
-        </div>
-
-        <ul id="tracklist">
-            <li>
-                <a href="./samples/blackbird.mp3">
-                    <button class="play-state-btn play-state-btn-small">
-                        <span class="play-icon" title="Play"></span>
-                        <span class="pause-icon" title="Pause"></span>
-                    </button>
-                    <h4>Blackbird on the Wire</h4>
-                    <p>3 mins 32 secs</p>
-                </a>
-            </li>
-            <li>
-                <a href="./samples/celeste.mp3">
-                    <button class="play-state-btn play-state-btn-small">
-                        <span class="play-icon" title="Play"></span>
-                        <span class="pause-icon" title="Pause"></span>
-                    </button>
-                    <h4>Celeste</h4>
-                    <p>3 mins 32 secs</p>
-                </a>
-            </li>
-            <li>
-                <a href="./samples/sweet-love.mp3">
-                    <button class="play-state-btn play-state-btn-small">
-                        <span class="play-icon" title="Play"></span>
-                        <span class="pause-icon" title="Pause"></span>
-                    </button>
-                    <h4>Sweet Love</h4>
-                    <p>3 mins 32 secs</p>
-                </a>
-            </li>
-        </ul>
-    </section>
 </main>
     
 <footer id="page-footer">
@@ -107,33 +107,49 @@
     // --- Music player
     var player = function(){
         this.audio = new Audio();
+        this.currentlyPlaying = '';
     };
     
     player.prototype = {
+        removeActive: function(){
+            $('.play-state-btn').filter('active').removeClass('active');
+            $('#tracklist').find('.active').removeClass('active');
+            $('#main-play-btn').removeClass('active');
+        },
+        
+        addActive: function(){
+            $('a[href="' + this.currentlyPlaying + '"]').addClass('active').find('.play-state-btn').addClass('active');
+            $('#main-play-btn').addClass('active');
+        },
+        
         play: function(href){
-            /*
-                $('.play-state-btn.active').removeClass('active');
-                $(e.currentTarget).addClass('active');
-            */
-
+            this.removeActive();
+            
             if (typeof href === 'string') {
-                if (this.audio.src === href) {
-                    // Don't fetch the url if its the same.
-                    this.audio.play();
-                    return;
-                }
-                
-                this.audio.src = href;
-                this.audio.pause();
-                this.audio.load();
-                this.audio.play();
-            } else {
-
+                this.currentlyPlaying = href;
+            } else if (this.currentlyPlaying === ''){
+                this.currentlyPlaying = $('#tracklist').find('a').first().attr('href');
             }
+            
+            this.addActive();
+            
+            if (this.audio.currentSrc === window.location.origin + this.currentlyPlaying) {
+                // Don't fetch the url if its the same.
+                this.audio.play();
+                return;
+            }
+            
+            this.addActive();
+            
+            this.audio.src = this.currentlyPlaying;
+            this.audio.pause();
+            this.audio.load();
+            this.audio.play();
+            
         },
 
         pause: function(){
-            $('.play-state-btn.active').removeClass('active');
+            this.removeActive();
             this.audio.pause();
         }
     };
@@ -153,20 +169,29 @@
         },
         
         bindEvents: function(){
-            this.el.$mainPlayBtn.click(this.player.play.bind(this));
+            this.el.$mainPlayBtn.click(this.clickMainBtn.bind(this));
             this.el.$trackLink.click(this.clickListing.bind(this));
+        },
+        
+        clickMainBtn: function(e){
+            var $this = $(e.currentTarget);
+            
+            if ($this.hasClass('active')) {
+                this.player.pause();
+            } else {
+                this.player.play();
+            }
         },
         
         clickListing: function(e){
             e.preventDefault();
             
-            var $this = $(this);
-            var $btn = $this.find('.play-state-btn');
+            var $this = $(e.currentTarget);
             
-            if ($btn.hasClass('active')) {
+            if ($this.hasClass('active')) {
                 this.player.pause();
             } else {
-                this.player.play(e.currentTarget.href);
+                this.player.play(e.currentTarget.pathname);
             }
         }
     };
