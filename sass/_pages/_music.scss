@@ -51,6 +51,7 @@ $musicBtnTransitionDuration: 0.2s;
     height: 3.4em;
     border-radius: 50%;
     border: 1px solid #ccc;
+    background-color: #fff;
     display: inline-block;
     position: relative;
     z-index: 2;
@@ -82,10 +83,6 @@ $musicBtnTransitionDuration: 0.2s;
         box-shadow: .2em 0 $musicLinkColor, -.2em 0 $musicLinkColor;
         margin: -.4em 0 0 -0.1em;
     }
-}
-
-.music-progress .play-state-btn {
-    position: absolute;
 }
 
 .play-icon,
@@ -197,10 +194,10 @@ $musicBtnTransitionDuration: 0.2s;
             .play-icon {
                 border-left-color: #555;
             }
-            
-            .pause-icon {
-                
-            }
+        }
+        
+        &.selected {
+            border-color: #ddd;
         }
         
         &.active {
@@ -220,6 +217,48 @@ $musicBtnTransitionDuration: 0.2s;
         color: #aaa;
     }
 }
+
+
+/* ------ Progress bar ------ */
+#music-progress .play-state-btn {
+    position: absolute;
+    z-index: 2;
+    margin-left: -1em;
+}
+
+.play-state-btn.active + .progress-bar {
+    cursor: col-resize;
+}
+
+.progress-bar {
+    display: block;
+    position: relative;
+    top: 1.15em;
+    z-index: 1;
+    height: 17px;
+    background: #ddd;
+    margin-left: 2.2em;
+    
+    &:before {
+        content: '';
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        right: 0;
+        top: 0;
+        background: url(/img/music/stave-overlay.svg) repeat-x right top;
+        background-size: cover;
+    }
+}
+
+.progress-bar-inner {
+    display: block;
+    height: 100%;
+    width: 0%;
+    background: $musicLinkColor;
+    transition: width .05s linear;
+}
+
 
 @media screen and (max-width: $smBreakpoint){
     #profile-image-wrap {

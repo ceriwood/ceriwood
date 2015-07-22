@@ -59,7 +59,7 @@
                         <span class="play-icon" title="Play"></span>
                         <span class="pause-icon" title="Pause"></span>
                     </button>
-                    <h4>Blackbird on the Wire</h4>
+                    <h4>Blackbird</h4>
                     <p>3 mins 32 secs</p>
                 </a>
             </li>
@@ -105,12 +105,37 @@
 <script>
     
     // --- Music player
-    var player = function(){
+    function Player(){
         this.audio = new Audio();
         this.currentlyPlaying = '';
     };
     
-    player.prototype = {
+    Player.prototype = {
+        init: function(){
+            this.bindEvents();
+        },
+        
+        bindEvents: function(){
+            this.audio.addEventListener('timeupdate', this.updateStave.bind(this), false);
+        },
+        
+        updateStave: function(e){
+            var currentTime = this.audio.currentTime;
+            var duration = this.audio.duration;
+            var percent = (currentTime/duration) * 100;
+            
+            $('.progress-bar-inner').css('width', percent + '%');
+            
+            /*
+            var progress = document.getElementById("progress");
+            var value = 0;
+            if (video.currentTime > 0) {
+              value = Math.floor((100 / video.duration) * video.currentTime);
+            }
+            progress.style.width = value + "%";
+            */
+        },
+        
         removeActive: function(){
             $('.play-state-btn').filter('active').removeClass('active');
             $('#tracklist').find('.active').removeClass('active');
@@ -118,7 +143,8 @@
         },
         
         addActive: function(){
-            $('a[href="' + this.currentlyPlaying + '"]').addClass('active').find('.play-state-btn').addClass('active');
+            $('a').filter('.selected').removeClass('selected');
+            $('a[href="' + this.currentlyPlaying + '"]').addClass('selected active').find('.play-state-btn').addClass('active');
             $('#main-play-btn').addClass('active');
         },
         
@@ -139,8 +165,6 @@
                 return;
             }
             
-            this.addActive();
-            
             this.audio.src = this.currentlyPlaying;
             this.audio.pause();
             this.audio.load();
@@ -155,15 +179,17 @@
     };
     
     // --- Main app
-    var app = function(){
-        this.player = new player();
+    function App(){
+        this.player = new Player();
+        this.player.init();
+        
         this.el = {
             $mainPlayBtn: $('#main-play-btn'),
             $trackLink: $('#tracklist a')
         };
     };
     
-    app.prototype = {
+    App.prototype = {
         init: function(){
             this.bindEvents();
         },
@@ -196,9 +222,9 @@
         }
     };
     
-    var App = new app();
+    var app = new App();
     $(document).ready(function(){
-        App.init()
+        app.init();
     });
     
 </script>
