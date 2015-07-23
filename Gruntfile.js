@@ -55,7 +55,7 @@ module.exports = function(grunt) {
                     load: false
                 },
                 
-                tests: ['touch'],
+                tests: ['touch', 'audio'],
                 
                 uglify: true,
                 

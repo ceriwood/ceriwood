@@ -1,7 +1,7 @@
 /* --- Import base/vendor styles --- */
 @import '_vendor/_normalize.scss';
 //@import '_vendor/_pure.scss';
-
+@import '_vendor/_outddatedbrowser.scss';
 
 /* --- Shared CSS and vendor overrides --- */
 @import '_common/_animations.scss';

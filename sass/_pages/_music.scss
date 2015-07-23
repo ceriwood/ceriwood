@@ -74,7 +74,7 @@ $musicBtnTransitionDuration: 0.2s;
     .play-icon {
         border-width: 5px 0 5px 5px;
         margin: -5px 0 0 -1.5px;
-        transform-origin: 1.5px 10px;
+        transform-origin: 2px 6px;
     }
     
     .pause-icon {
@@ -276,6 +276,15 @@ $musicBtnTransitionDuration: 0.2s;
     height: 100%;
     width: 0%;
     background: $musicLinkColor;
+}
+
+.time-elapsed {
+    position: absolute;
+    z-index: 2;
+    top: 100%;
+    font-size: .9rem;
+    color: $musicLinkColor;
+    white-space: nowrap;
 }
 
 #music-footer p {
