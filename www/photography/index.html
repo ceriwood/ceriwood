@@ -29,7 +29,7 @@
     <meta property="og:description" content="Portfolio of music & events photographer Ceri Wood" /> 
     <meta property="og:site_name" content="ceriwood" /> 
     <meta property="article:published_time" content="2014-10-22T00:00:00+01:00" /> 
-    <meta property="article:modified_time" content="2015-07-20T00:00:00+01:00" />
+    <meta property="article:modified_time" content="2015-11-26T00:00:00+01:00" />
     
     <link href='http://fonts.googleapis.com/css?family=Open+Sans:300,400,700' rel='stylesheet' type='text/css'>
     <link rel="stylesheet" type="text/css" href="/css/style.css" />
@@ -94,7 +94,7 @@
             xhr.done(function(data){
                 $(data).find('photoset').each(function(){
                     var $this = $(this);
-                    var title = $(this).find('title').text();
+                    var title = $this.find('title').text();
 
                     if (title.indexOf(self.photoPrefix) === -1) return;
 
@@ -104,9 +104,7 @@
                     });
                 });
                 
-                self.photosets.forEach(function(obj){
-                    $('#album-list').append('<li><a href="#' + obj.title + '" data-album-id="' + obj.id + '">' + obj.title + '</a></li>');
-                });
+                self.setAlbumList();
                 
                 var hash = window.location.hash;
                 if (hash === ''){
@@ -114,19 +112,25 @@
                     $('#album-list').first('li').find('a').addClass('active');
                 } else {
                     var photosetToSelect = self.photosets.filter(function(obj){
-                        return obj.title === hash.substr(1);
+                        return obj.title.toLowerCase() === hash.substr(1).toLowerCase();
                     });
                     
                     if (photosetToSelect !== void 0) {
                         self.getPhotos(photosetToSelect[0]);
                     }
                     
-                    // Need to work out the correct way of routing to About/Contact pages
+                    // @TODO - Need to work out the correct way of routing to About/Contact pages
                 }
             });
             
             xhr.fail(function(err){
                 console.error(err);
+            });
+        },
+        
+        setAlbumList: function(){
+            this.photosets.forEach(function(obj){
+                $('#album-list').append('<li><a href="#' + obj.title + '" data-album-id="' + obj.id + '">' + obj.title + '</a></li>');
             });
         },
         
