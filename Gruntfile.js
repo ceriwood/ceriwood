@@ -43,6 +43,10 @@ module.exports = function(grunt) {
             sass: {
                 files: ['sass/**/*.scss'],
                 tasks: ['sass:dev', 'postcss']
+            },
+            html: {
+                files: ["www/**/*"],
+                tasks: []
             }
         },
         
@@ -50,10 +54,7 @@ module.exports = function(grunt) {
             dist: {
                 devFile: 'www/modernizr-latest.js',
                 outputFile: 'www/modernizr-custom.js',
-                
-                extra: {
-                    load: false
-                },
+                parseFiles: true,
                 
                 tests: ['touch', 'audio'],
                 
@@ -61,24 +62,27 @@ module.exports = function(grunt) {
                 
                 files: {
                     src: [
-                        'www/app/**/*',
+                        'www/**/*',
                         'sass/**/*'
                     ]
                 }
             }
         },
         
-        imagemin: {
-            build: {
+        connect: {
+            server: {
                 options: {
-                    optimizationLevel: 2
-                },
-                files: [{
-                    expand: true,
-                    cwd: 'www/img/',
-                    src: ['**/*.{png,jpg,gif}'],
-                    dest: 'www/img/'
-                }]
+                    keepalive: true,
+                    port: 8000,
+                    base: 'www/',
+                    hostname: 'localhost'
+                }
+            }
+        },
+        
+        concurrent: {
+            app: {
+                tasks: ['watch', 'connect']
             }
         },
         
@@ -92,5 +96,7 @@ module.exports = function(grunt) {
         }
     });
     
-    grunt.registerTask('default', ['modernizr', 'sass:prod', 'postcss', 'gh-pages']);
+    grunt.registerTask('dev', ['concurrent:app']);
+    grunt.registerTask('deploy', ['gh-pages']);
+    grunt.registerTask('default', ['modernizr', 'sass:prod', 'postcss']);
 };
