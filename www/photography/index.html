@@ -69,10 +69,6 @@
         this.userId = '31363701@N00';
         this.photoPrefix = 'CWP-';
         this.photosets = [];
-        
-        this.el = {
-            
-        };
     };
     
     App.prototype = {
@@ -110,6 +106,10 @@
                 if (hash === ''){
                     self.getPhotos({ id: self.photosets[0].id });
                     $('#album-list').first('li').find('a').addClass('active');
+                } else if (hash === 'about') {
+                    // @TODO - Show about page
+                } else if (hash === 'contact') {
+                    // @TODO - Show contact page
                 } else {
                     var photosetToSelect = self.photosets.filter(function(obj){
                         return obj.title.toLowerCase() === hash.substr(1).toLowerCase();
@@ -118,8 +118,6 @@
                     if (photosetToSelect !== void 0) {
                         self.getPhotos(photosetToSelect[0]);
                     }
-                    
-                    // @TODO - Need to work out the correct way of routing to About/Contact pages
                 }
             });
             
