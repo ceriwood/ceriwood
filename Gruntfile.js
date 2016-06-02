@@ -1,5 +1,3 @@
-// Generated on 2015-01-08 using generator-min 0.1.0
-
 module.exports = function(grunt) {
     'use strict';
     
