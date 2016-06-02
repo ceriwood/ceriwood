@@ -7,27 +7,23 @@ $smBreakpoint: 30em;
     box-sizing: border-box;
     tap-highlight-color: rgba(0,0,0,0);
     tap-highlight-color: transparent;
+    user-drag: none; 
+    user-select: none;
+    -moz-user-select: none;
+    -webkit-user-drag: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
 }
 
 html, body {
+    width: 100%;
     height: 100%;
+    overflow: hidden;
     margin: 0;
     padding: 0;
 }
 
-html {
-    font-family: $bodyFont;
-    color: #777;
-}
-
-h1,h2,h3,
-h4,h5,h6 {
-    font-family: $headerFont;
-    font-weight: 300;
-    color: #000;
-}
-
-p { font-size: 95%; }
+body { background: #2e2e2e; }
 
 .cf:before,
 .cf:after {
@@ -39,32 +35,7 @@ p { font-size: 95%; }
     clear: both;
 }
 
-h1 {
-    line-height: 1.4;
-}
-
 .rounded {
     border-radius: 50%;
 }
 
-.grid-half {
-    text-align: center;
-    
-    > div,
-    > ul {
-        display: inline-block;
-        vertical-align: top;
-        width: 49.6%;
-        margin: 0;
-        padding: 1em .5em;
-    }
-}
-
-@media screen and (max-width: $smBreakpoint) {
-    .grid-half {
-        > div,
-        > ul {
-            width: 100%;
-        }
-    }
-}

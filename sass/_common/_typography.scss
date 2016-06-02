@@ -1,0 +1,23 @@
+html {
+    font-family: $bodyFont;
+    color: #777;
+    font-size: 17px;
+    font-weight: 300;
+}
+
+h1,h2,h3,
+h4,h5,h6 {
+    font-family: $headerFont;
+    font-weight: 300;
+    color: #000;
+}
+
+h1 { line-height: 1.4; }
+
+p { font-size: 95%; }
+
+a {
+    text-decoration: none;
+    color: #fff;
+    text-transform: capitalize;
+}

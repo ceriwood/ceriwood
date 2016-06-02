@@ -39,17 +39,20 @@
 </head>
 <body>
 
-<nav id="page-nav" role="navigation">
-    <header id="page-header" role="banner">
-        <h1><a href="/">
-            <img itemprop="image" src="/img/cw-logo-white.svg" width="280" alt="Ceri Wood" title="Ceri Wood">
-        </a></h1>
-    </header>
-    
-    <ul id="album-list"></ul>
-    
-    <a href="#about">About</a>
-    <a href="#contact">Contact</a>
+<nav id="page-nav-container" role="navigation">
+    <div id="page-nav">
+        <header id="page-header" role="banner">
+            <h1><a href="/">
+                <img itemprop="image" src="/img/cwlogo-white.svg" width="205" height="40" alt="Ceri Wood" title="Ceri Wood">
+            </a></h1>
+        </header>
+
+        <ul id="album-list"></ul>
+
+        <a href="#about">About</a>
+        <a href="#contact">Contact</a>
+    </div>
+    <div id="page-nav-overlay"></div>
 </nav>
 
 
@@ -57,132 +60,8 @@
     <div id="photo-container"></div>
 </main>
     
-<footer id="page-footer">
-    
-</footer>
-    
-<script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
-<script>
-    // --- Main app
-    function App(){
-        this.apiKey = 'c6dc8581507548e535e52e8cdb1dfde6';
-        this.userId = '31363701@N00';
-        this.photoPrefix = 'CWP-';
-        this.photosets = [];
-    };
-    
-    App.prototype = {
-        init: function(){
-            this.bindEvents();
-            
-            this.getPhotosets();
-        },
-        
-        bindEvents: function(){
-            
-        },
-        
-        getPhotosets: function(){
-            var xhr = $.get('https://api.flickr.com/services/rest/?method=flickr.photosets.getList&api_key=' + this.apiKey + '&user_id=' + this.userId);
-            
-            var self = this;
-            
-            xhr.done(function(data){
-                $(data).find('photoset').each(function(){
-                    var $this = $(this);
-                    var title = $this.find('title').text();
-
-                    if (title.indexOf(self.photoPrefix) !== 0) return;
-
-                    self.photosets.push({
-                        title: title.substr(4),
-                        id: this.id
-                    });
-                });
-                
-                self.setAlbumList();
-                
-                var hash = window.location.hash;
-                if (hash === ''){
-                    self.getPhotos({ id: self.photosets[0].id });
-                    $('#album-list').first('li').find('a').addClass('active');
-                } else if (hash === 'about') {
-                    // @TODO - Show about page
-                } else if (hash === 'contact') {
-                    // @TODO - Show contact page
-                } else {
-                    var photosetToSelect = self.photosets.filter(function(obj){
-                        return obj.title.toLowerCase() === hash.substr(1).toLowerCase();
-                    });
-                    
-                    if (photosetToSelect !== void 0) {
-                        self.getPhotos(photosetToSelect[0]);
-                    }
-                }
-            });
-            
-            xhr.fail(function(err){
-                console.error(err);
-            });
-        },
-        
-        setAlbumList: function(){
-            this.photosets.forEach(function(obj){
-                $('#album-list').append('<li><a href="#' + obj.title + '" data-album-id="' + obj.id + '">' + obj.title + '</a></li>');
-            });
-        },
-        
-        getPhotos: function(obj){
-            var xhr = $.get('https://api.flickr.com/services/rest/' +
-                  '?method=flickr.photosets.getPhotos' +
-                  '&api_key=' + this.apiKey + 
-                  '&user_id=' + this.userId + 
-                  '&photoset_id=' + obj.id + 
-                  '&extras=description');
-            var photos = [];
-            var self = this;
-            
-            xhr.done(function(data){
-                $(data).find('photo').each(function(i, obj){
-                    var url = 'https://farm' + obj.getAttribute('farm') + 
-                              '.staticflickr.com/' + obj.getAttribute('server') + 
-                              '/' + obj.getAttribute('id') + 
-                              '_' + obj.getAttribute('secret') + '_c.jpg';
-                    
-                    var description = obj.getElementsByTagName('description')[0].innerHTML || '';
-                    
-                    photos.push({
-                        url: url,
-                        title: obj.getAttribute('title'),
-                        description: description
-                    });
-                });
-                
-                self.renderPhotos(photos);
-            });
-            
-            xhr.fail(function(err){
-                console.error(err);
-            });
-        },
-        
-        renderPhotos: function(photos){
-            var $html = $('');
-            
-            $.each(photos, function(i, obj){
-                $html.append('<img src="' + obj.url + '" alt="' + (obj.description || '') + '" title="'+ (obj.title || '') + '" />');
-            });
-            
-            ('#photo-container').html($html);
-        }
-    };
-    
-    var app = new App();
-    $(document).ready(function(){
-        app.init();
-    });
-    
-</script>
+<script src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
+<script src="./js/app.js"></script>
 
 </body>
 </html>

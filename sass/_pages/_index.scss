@@ -1,0 +1,52 @@
+#page-nav-container {
+    position: fixed;
+    z-index: 2;
+    top: 0;
+    left: 0;
+    width: 30%;
+    height: 100%;
+    cursor: grab;
+}
+
+#page-nav-overlay {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+    background: RGBA(34,34,34,0.5);
+    /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#222222+0,222222+100&1+0,0.5+60,0+100 */
+    background: -moz-linear-gradient(left, rgba(34,34,34,1) 0%, rgba(34,34,34,0.5) 70%, rgba(34,34,34,0) 100%); /* FF3.6-15 */
+    background: -webkit-linear-gradient(left, rgba(34,34,34,1) 0%,rgba(34,34,34,0.5) 70%,rgba(34,34,34,0) 100%); /* Chrome10-25,Safari5.1-6 */
+    background: linear-gradient(to right, rgba(34,34,34,1) 0%,rgba(34,34,34,0.5) 70%,rgba(34,34,34,0) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+}
+
+#page-nav {
+    position: absolute;
+    z-index: 2;
+    top: 50%;
+    left: 0;
+    width: 100%;
+    transform: translate3d(0,-60%,0);
+}
+
+#photo-container {
+    white-space: nowrap;
+    position: absolute;
+    z-index: 1;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    cursor: grab;
+    
+    &:active {
+        cursor: grabbing;
+    }
+    
+    img {
+        max-width: 100%; /* Fix for odd container sizing */
+        height: 100%;
+    }
+}
