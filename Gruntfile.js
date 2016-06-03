@@ -1,10 +1,21 @@
 module.exports = function(grunt) {
-    'use strict';
-    
+    require('time-grunt')(grunt);
     require('load-grunt-tasks')(grunt);
     
     grunt.initConfig({
         pkg: grunt.file.readJSON('package.json'),
+        
+        browserify: {
+            app: {
+                options: {
+                    transform: [
+                        ['babelify', {presets: ['es2015', 'react']}]
+                    ]
+                },
+                src: 'www/js/app.js',
+                dest: 'www/js/app.min.js'
+            }
+        },
         
         sass: {
             dev: {
@@ -42,9 +53,10 @@ module.exports = function(grunt) {
                 files: ['sass/**/*.scss'],
                 tasks: ['sass:dev', 'postcss']
             },
-            html: {
-                files: ["www/**/*"],
-                tasks: []
+            
+            js: {
+                files: ['www/js/**/*.js', '!www/js/app.min.js'],
+                tasks: ['browserify']
             }
         },
         
@@ -78,12 +90,6 @@ module.exports = function(grunt) {
             }
         },
         
-        concurrent: {
-            app: {
-                tasks: ['watch', 'connect']
-            }
-        },
-        
         'gh-pages': {
             options: {
                 base: 'www',
@@ -91,10 +97,36 @@ module.exports = function(grunt) {
                 repo: 'git@github.com:ceriwood/ceriwood.github.io.git'
             },
             src: ['**/*']
+        },
+        
+        uglify: {
+            options: {
+                mangle: false
+            },
+            prod: {
+                files: {
+                    'www/js/app.min.js': ['www/js/app.min.js']
+                }
+            }
+        },
+        
+        concurrent: {
+            dev: {
+                options: {
+                    logConcurrentOutput: true
+                },
+                tasks: ['watch', 'connect']
+            },
+            deploy1: {
+                tasks: ['sass:prod', 'browserify']
+            },
+            deploy2: {
+                tasks: ['postcss', 'uglify']
+            }
         }
     });
     
-    grunt.registerTask('dev', ['concurrent:app']);
-    grunt.registerTask('deploy', ['gh-pages']);
-    grunt.registerTask('default', ['modernizr', 'sass:prod', 'postcss']);
+    grunt.registerTask('dev', ['concurrent:dev']);
+    grunt.registerTask('build', ['modernizr', 'sass:prod', 'postcss']);
+    grunt.registerTask('default', ['modernizr', 'concurrent:deploy1', 'concurrent:deploy2'/*, 'gh-pages'*/]);
 };

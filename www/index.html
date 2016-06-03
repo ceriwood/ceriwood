@@ -39,21 +39,30 @@
 </head>
 <body>
 
-<nav id="page-nav-container" role="navigation">
+<div id="page-nav-container" role="navigation">
     <div id="page-nav">
         <header id="page-header" role="banner">
             <h1><a href="/">
-                <img itemprop="image" src="/img/cwlogo-white.svg" width="205" height="40" alt="Ceri Wood" title="Ceri Wood">
+                <img itemprop="image" src="/img/cwlogo-white.svg" width="190" height="40" alt="Ceri Wood" title="Ceri Wood">
             </a></h1>
         </header>
 
-        <ul id="album-list"></ul>
-
-        <a href="#about">About</a>
-        <a href="#contact">Contact</a>
+        <nav>
+            <ul id="album-list">
+                <hr>
+                <a href="#contact">
+                    <svg width="28" height="28" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 28 28" enable-background="new 0 0 28 28" xml:space="preserve">
+                        <path fill="#ffffff" d="M5.6,6.3l5.8,10H2.8c-0.1-0.7-0.2-1.4-0.2-2.3C2.6,11,3.6,8.5,5.6,6.3z M3.1,17.4h11.1l-4.2,7.2c-1.6-0.6-3.1-1.5-4.3-2.8
+                            C4.5,20.6,3.6,19.1,3.1,17.4z M11.1,12.3l-0.1,0.1L6.8,5.2c2.1-1.7,4.5-2.6,7.2-2.6c0.8,0,1.6,0.1,2.5,0.3L11.1,12.3z M11.5,25.1
+                            c0.1-0.3,0.9-1.6,2.3-4s2.5-4.3,3.2-5.5l4.2,7.2c-2.1,1.7-4.5,2.6-7.2,2.6C13.2,25.4,12.4,25.3,11.5,25.1z M24.9,10.6H13.8l4.2-7.2
+                            c1.6,0.6,3.1,1.5,4.3,2.8C23.5,7.4,24.4,8.9,24.9,10.6z M25.2,11.7c0.1,0.7,0.2,1.4,0.2,2.3c0,3-1,5.5-3,7.7l-5.5-9.4l-0.3-0.6
+                            H25.2z"/>
+                    </svg>
+                    Hire me</a>
+            </ul>
+        </nav>
     </div>
-    <div id="page-nav-overlay"></div>
-</nav>
+</div>
 
 
 <main role="main">
@@ -61,7 +70,7 @@
 </main>
     
 <script src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
-<script src="./js/app.js"></script>
+<script src="./js/app.min.js"></script>
 
 </body>
 </html>
