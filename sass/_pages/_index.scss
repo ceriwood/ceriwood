@@ -86,13 +86,13 @@ $nav-width: 265px;
         }
         
         &:active {
-            background: RGBA(0,0,0,0.4);
+            background: RGBA(0,0,0,0.35);
             border-color: RGBA(255,255,255,0.4);
         }
         
         &.active {
-            background: RGBA(0,0,0,0.3);
-            border-color: RGBA(255,255,255,0.3);
+            background: RGBA(0,0,0,0.2);
+            border-color: RGBA(255,255,255,0.2);
         }
     }
 }

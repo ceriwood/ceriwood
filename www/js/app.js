@@ -122,7 +122,7 @@ App.prototype = {
                 var url = 'https://farm' + obj.getAttribute('farm') + 
                           '.staticflickr.com/' + obj.getAttribute('server') + 
                           '/' + obj.getAttribute('id') + 
-                          '_' + obj.getAttribute('secret') + '_c.jpg';
+                          '_' + obj.getAttribute('secret') + '_b.jpg';
 
                 var description = obj.getElementsByTagName('description')[0].innerHTML || '';
 
