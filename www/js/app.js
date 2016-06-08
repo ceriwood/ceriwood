@@ -1,7 +1,7 @@
 function App(){
     this.apiKey = 'c6dc8581507548e535e52e8cdb1dfde6';
-    this.userId = '31363701@N00';
-    this.photoPrefix = 'CWP-';
+    this.userId = '141580833@N07';
+    this.photoPrefix = 'CWP - ';
     this.photosets = [];
     this.activeSet = 0;
 };
@@ -37,7 +37,6 @@ App.prototype = {
         
         // Check if any photoset === current URL
         var photosetToSelect = this.photosets.find(function(obj){
-            console.log(obj, curUrl);
             return obj.title.toLowerCase() === curUrl.toLowerCase();
         });
         
@@ -78,7 +77,7 @@ App.prototype = {
                 if (title.indexOf(self.photoPrefix) !== 0) return;
 
                 self.photosets.push({
-                    title: title.substr(4),
+                    title: title.split(self.photoPrefix)[1],
                     id: this.id
                 });
             });
@@ -146,7 +145,7 @@ App.prototype = {
         var html = '';
 
         $.each(photos, function(i, obj){
-            html += '<img src="' + obj.url + '" alt="' + (obj.description || '') + '" title="'+ (obj.title || '') + '" />';
+            html += '<img src="' + obj.url + '" alt="' + (obj.description || '') + '" data-title="'+ (obj.title || '') + '" />';
         });
 
         $('#photo-container').html(html);
