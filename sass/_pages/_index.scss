@@ -9,7 +9,7 @@ $nav-width: 265px;
     width: $nav-width;
     height: 100%;
     cursor: grab;
-    background: RGBA(34,34,34,0.5);
+    background: RGBA(34,34,34,0.6);
 }
 
 #page-nav {
@@ -18,6 +18,7 @@ $nav-width: 265px;
 }
 
 #photo-container {
+    max-width: 100%; // Fix for image overflow issue
     white-space: nowrap;
     position: absolute;
     z-index: 1;
@@ -26,6 +27,7 @@ $nav-width: 265px;
     bottom: 0;
     cursor: grab;
     padding-left: $nav-width;
+    transform: translate3d(0,0,0);
     
     &:active {
         cursor: grabbing;
@@ -69,26 +71,24 @@ $nav-width: 265px;
         display: inline-block;
         background: rgba(0, 0, 0, 0);
         padding: 0.5em 1.4em 0.55em $side-margin;
-        border: 1px solid rgba(0, 0, 0, 0);
         border-left: 0;
         border-top-right-radius: 50px;
         border-bottom-right-radius: 50px;
-        transition: all 0.25s;
+        transition: background 0.25s;
         
         &:hover,
         &:focus {
-            background: RGBA(0,0,0,0.1);
-            border-color: RGBA(255,255,255,0.1);
+            background: RGBA(0,0,0,0.3);
         }
         
         &:active {
-            background: RGBA(0,0,0,0.35);
-            border-color: RGBA(255,255,255,0.4);
+            background: RGBA(0,0,0,0.4);
         }
         
         &.active {
-            background: RGBA(0,0,0,0.2);
-            border-color: RGBA(255,255,255,0.2);
+            color: #000;
+            background: RGBA(255,255,255,0.92);
+            font-weight: 400;
         }
     }
 }

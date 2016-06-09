@@ -1,3 +1,6 @@
+var feature = require('feature.js');
+var raf = require('raf');
+
 function App(){
     this.apiKey = 'c6dc8581507548e535e52e8cdb1dfde6';
     this.userId = '141580833@N07';
@@ -30,6 +33,7 @@ App.prototype = {
         }
         
         if (curUrl == 'contact') {
+            this.activeSet = 0;
             this.selectNavElement('contact');
             this.showContactArea();
             return;
@@ -162,25 +166,53 @@ App.prototype = {
     },
     
     dragScroll: function(){
-        var curYPos = 0;
         var curXPos = 0;
         var curDown = false;
-
-        window.addEventListener('mousemove', function(e){ 
-          if(curDown === true){
-            window.scrollTo(document.body.scrollLeft + (curXPos - e.pageX), document.body.scrollTop);
-          }
-        });
+        var xPosArr = [];
 
         window.addEventListener('mousedown', function(e){
+            if (feature.touch || $(window).width() <= 480) return;
+            
+            xPosArr = [e.pageX];
             curDown = true;
-            curYPos = e.pageY;
             curXPos = e.pageX;
         });
         
-        window.addEventListener('mouseup', function(e){
-            curDown = false;
+        window.addEventListener('mousemove', function(e){ 
+            if(curDown === false) return;
+            
+            var toPosX = document.body.scrollLeft + (curXPos - e.pageX);
+            
+            xPosArr.unshift(toPosX)
+            
+            window.scrollTo(toPosX, document.body.scrollTop);
         });
+        
+        window.addEventListener('mouseup', function(e){
+            if (curDown == false) return;
+            curDown = false;
+            
+            if (xPosArr.length < 3) return;
+            
+            animScroll(xPosArr);
+        });
+        
+        function animScroll(arr){
+            var decel = 1.1; // deceleration - higher = faster
+            var dist = Math.round((arr[0] - arr[2]) / decel);
+            
+            var loop = raf(function tick(){
+                if (dist <= 1 && dist >= -1) {
+                    raf.cancel(loop);
+                    return;
+                }
+                
+                dist = dist / decel;
+                
+                window.scrollTo(document.body.scrollLeft + dist, document.body.scrollTop);
+                raf(tick);
+            });
+        }
     }
 };
 
