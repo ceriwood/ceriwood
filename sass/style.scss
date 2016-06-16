@@ -1,3 +1,9 @@
+/* --- Shared variables --- */
+$side-margin: 28px;
+$nav-width: 265px;
+$mobile-width: 480px;
+
+
 /* --- Import base/vendor styles --- */
 @import '_vendor/_normalize.scss';
 //@import '_vendor/_pure.scss';

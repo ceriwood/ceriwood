@@ -2,22 +2,39 @@ var feature = require('feature.js');
 var raf = require('raf');
 
 function App(){
-    this.apiKey = 'c6dc8581507548e535e52e8cdb1dfde6';
-    this.userId = '141580833@N07';
-    this.photoPrefix = 'CWP - ';
-    this.photosets = [];
-    this.activeSet = 0;
+    // Store constants here
+    this.c = {
+        apiKey: 'c6dc8581507548e535e52e8cdb1dfde6',
+        userId: '141580833@N07',
+        photoPrefix: 'CWP - ',
+        photosets: [],
+        activeSet: 0,
+        albumRetries: 0,
+        
+        el: {
+            $nav: $('#page-nav-container')
+        }
+    }
 };
 
 App.prototype = {
     init: function(){
         this.bindEvents();
         this.route();
+        this.setConstants();
+    },
+    
+    setConstants: function(){
+        // Set any required constants (e.g. widths/heights) here
     },
 
     bindEvents: function(){
         $(window).on('hashchange', function(){
             this.route();
+        }.bind(this));
+        
+        $(window).on('resize', function(){
+            this.setConstants();
         }.bind(this));
         
         this.dragScroll();
@@ -27,29 +44,29 @@ App.prototype = {
         var curUrl = location.hash.split('#')[1] || '';
         
         // First load - fetch photosets
-        if (this.photosets.length == 0) {
+        if (this.c.photosets.length == 0) {
             this.getPhotosets();
             return;
         }
         
         if (curUrl == 'contact') {
-            this.activeSet = 0;
+            this.c.activeSet = 0;
             this.selectNavElement('contact');
             this.showContactArea();
             return;
         }
         
         // Check if any photoset === current URL
-        var photosetToSelect = this.photosets.find(function(obj){
+        var photosetToSelect = this.c.photosets.find(function(obj){
             return obj.title.toLowerCase() === curUrl.toLowerCase();
         });
         
         // No photosets match URL - change url to first photoset and trigger a 'replace'
         if (!photosetToSelect) {
-            location.replace('#' + this.photosets[0].title);
+            location.replace('#' + this.c.photosets[0].title);
             return;
         } else {
-            this.activeSet = photosetToSelect.id;
+            this.c.activeSet = photosetToSelect.id;
         }
         
         this.selectNavElement(photosetToSelect.title)
@@ -64,11 +81,11 @@ App.prototype = {
     },
 
     getPhotosets: function(){
-        var xhr = $.get('https://api.flickr.com/services/rest/?method=flickr.photosets.getList&api_key=' + this.apiKey + '&user_id=' + this.userId);
+        var xhr = $.get('https://api.flickr.com/services/rest/?method=flickr.photosets.getList&api_key=' + this.c.apiKey + '&user_id=' + this.c.userId);
         var self = this;
         
         // Clear the array, just in case there are issues with back/forward clickthroughs
-        this.photosets = [];
+        this.c.photosets = [];
         
         // @TODO - check localstorage for stored version. Album list could be updated every 15 minutes instead of on pageload.
         // ---------------
@@ -78,10 +95,10 @@ App.prototype = {
                 var $this = $(this);
                 var title = $this.find('title').text();
 
-                if (title.indexOf(self.photoPrefix) !== 0) return;
+                if (title.indexOf(self.c.photoPrefix) !== 0) return;
 
-                self.photosets.push({
-                    title: title.split(self.photoPrefix)[1],
+                self.c.photosets.push({
+                    title: title.split(self.c.photoPrefix)[1],
                     id: this.id
                 });
             });
@@ -91,28 +108,32 @@ App.prototype = {
         });
 
         xhr.fail(function(err){
-            // @TODO - add error message saying album list couldn't be loaded
-            console.error(err);
+            if (self.c.albumRetries < 3) {
+                self.c.albumRetries ++;
+                self.getPhotosets();
+                return;
+            }
             
-            // @TODO - perhaps try a few more times before giving up? Maybe check offline status?
+            // Album list couldn't be loaded
+            $('#album-list').prepend('<p>Album list couldn\'t be loaded. Try <a href="/">refreshing the page</a></p>').find('.loading-container').remove();
         });
     },
     
     renderAlbumList: function(){
         var html = '';
-        this.photosets.forEach(function(obj){
+        this.c.photosets.forEach(function(obj){
             html += '<li><a href="#' + obj.title + '" data-album-id="' + obj.id + '">' + obj.title + '</a></li>';
         });
         
-        $('#album-list').prepend(html);
+        $('#album-list').prepend(html).find('.loading-container').remove();
     },
     
     getPhotos: function(){
         var xhr = $.get('https://api.flickr.com/services/rest/' +
               '?method=flickr.photosets.getPhotos' +
-              '&api_key=' + this.apiKey + 
-              '&user_id=' + this.userId + 
-              '&photoset_id=' + this.activeSet + 
+              '&api_key=' + this.c.apiKey + 
+              '&user_id=' + this.c.userId + 
+              '&photoset_id=' + this.c.activeSet + 
               '&extras=description');
         var photos = [];
         var self = this;

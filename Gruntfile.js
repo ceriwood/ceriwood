@@ -128,5 +128,5 @@ module.exports = function(grunt) {
     
     grunt.registerTask('dev', ['concurrent:dev']);
     grunt.registerTask('build', ['modernizr', 'sass:prod', 'postcss']);
-    grunt.registerTask('default', ['modernizr', 'concurrent:deploy1', 'concurrent:deploy2'/*, 'gh-pages'*/]);
+    grunt.registerTask('default', ['modernizr', 'concurrent:deploy1', 'concurrent:deploy2', 'gh-pages']);
 };
