@@ -25,8 +25,8 @@ module.exports = function(grunt) {
             },
             prod: {
                 options: {
-                    sourcemap: 'auto',
-                    style: 'compressed'
+                    sourcemap: true,
+                    outputStyle: 'compressed'
                 },
                 files: {
                     'www/css/style.css': 'sass/style.scss'
@@ -117,16 +117,16 @@ module.exports = function(grunt) {
                 },
                 tasks: ['watch', 'connect']
             },
-            deploy1: {
+            build1: {
                 tasks: ['sass:prod', 'browserify']
             },
-            deploy2: {
+            build2: {
                 tasks: ['postcss', 'uglify']
             }
         }
     });
     
     grunt.registerTask('dev', ['concurrent:dev']);
-    grunt.registerTask('build', ['modernizr', 'sass:prod', 'postcss']);
-    grunt.registerTask('default', ['modernizr', 'concurrent:deploy1', 'concurrent:deploy2', 'gh-pages']);
+    grunt.registerTask('default', ['modernizr', 'concurrent:build1', 'concurrent:build2']);
+    grunt.registerTask('deploy', ['gh-pages']);
 };
